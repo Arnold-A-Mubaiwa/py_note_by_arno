@@ -59,3 +59,36 @@ urlpatterns = [
     path('publishers/', PublisherListView.as_view()),
 ]
 ```
+
+Because we didn't specify the template_name in the view class Django will infer one which is publisher_list.html that should be in the books template dir
+
+```
+/path/to/project/books/templates/books/publisher_list.html
+```
+
+This template will be rendered against a context containing a variable called object_list that contains all the publisher objects. A template might look like this:
+
+```
+{% extend "base.html" %}
+
+{% block content %}
+    <h2>Publishers</h2>
+    <ul>
+        {% for publisher in object_list %}
+            <li>{{ publisher }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+```
+
+Instead of using object_list you can rename the object list to suit fit the Model
+
+```
+from django.views.generic import ListView
+from books.models import Publishers
+
+class PublisherListView(ListView):
+    model = Publisher
+    context_object_name = 'publisher_list'
+```
+Providing a useful context_object_name is always a good idea.
