@@ -92,3 +92,34 @@ class PublisherListView(ListView):
     context_object_name = 'publisher_list'
 ```
 Providing a useful context_object_name is always a good idea.
+
+### Adding extra context
+
+To add extra infomation to the DetailView than provided by generic view, you can provide ypur own implementations to the get_context_data() method.  The default implementation adds the object being displayed to the template, but you can override it to send more:
+
+```
+form django.views.generic import DetailView
+from .models import Book, Publisher
+
+class PublisherDetailView(DetailView):
+    model = Publisher
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['book_list'] = Book.objects.all()
+        return context
+```
+
+### Viewing subsets of objects
+ The model argument is not the only way to specify the objects that the view will operate upon – you can also specify the list of objects using the queryset argument:
+
+ using query set:
+
+ ```
+ from django.views.generic import DetailView
+ from .models import Publisher
+
+ class PublisherDetailView(DetailView):
+    context_object_name = 'publisher'
+    queryset = Publisher.objects.all()
+```
