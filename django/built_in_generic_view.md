@@ -123,3 +123,19 @@ class PublisherDetailView(DetailView):
     context_object_name = 'publisher'
     queryset = Publisher.objects.all()
 ```
+
+to order your list you can use
+
+```
+queryset = Book.objects.order_by('-publication_date')
+```
+
+ If you want to present a list of books by a particular publisher, you can use the same technique: Note that along with a filtered queryset, we’re also using a custom template name.
+
+```
+ queryset = Book.objects.filter(publisher__name='ACME Publishing')
+    template_name = 'books/acme_list.html'
+```
+
+### Dynamic Filtering
+The common need is to filter down the objects given in a list page by some key in the URL
